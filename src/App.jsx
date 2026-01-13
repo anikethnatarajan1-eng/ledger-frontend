@@ -20,14 +20,9 @@ export default function App() {
         });
 
         let json = null;
-        try {
-          json = await res.json();
-        } catch {
-          json = null;
-        }
+        try { json = await res.json(); } catch { json = null; }
 
-        const outcomes =
-          json && Array.isArray(json.outcomes) ? json.outcomes : [];
+        const outcomes = json && Array.isArray(json.outcomes) ? json.outcomes : [];
 
         if (!cancelled) {
           setData({ outcomes });
@@ -47,7 +42,6 @@ export default function App() {
   }, []);
 
   const outcomes = Array.isArray(data.outcomes) ? data.outcomes : [];
-
   const repos = useMemo(() => ["all", ...Array.from(new Set(outcomes.map(o => o?.repo).filter(Boolean)))], [outcomes]);
   const users = useMemo(() => ["all", ...Array.from(new Set(outcomes.map(o => o?.user).filter(Boolean)))], [outcomes]);
 
@@ -64,27 +58,18 @@ export default function App() {
     <div style={{ padding: 40, fontFamily: "system-ui" }}>
       <h1>Human Reputation Ledger</h1>
       <p>Live GitHub contribution intelligence</p>
-
       {error && <div style={{ color: "darkred", marginBottom: 20 }}>{error}</div>}
-
       <div style={{ display: "flex", gap: 20, marginBottom: 20 }}>
         <select value={repoFilter} onChange={e => setRepoFilter(e.target.value)}>
           {repos.map(r => <option key={r} value={r}>{r}</option>)}
         </select>
-
         <select value={userFilter} onChange={e => setUserFilter(e.target.value)}>
           {users.map(u => <option key={u} value={u}>{u}</option>)}
         </select>
       </div>
-
       <table border="1" cellPadding="8" style={{ width: "100%", borderCollapse: "collapse" }}>
         <thead>
-          <tr>
-            <th>User</th>
-            <th>Repo</th>
-            <th>Message</th>
-            <th>Date</th>
-          </tr>
+          <tr><th>User</th><th>Repo</th><th>Message</th><th>Date</th></tr>
         </thead>
         <tbody>
           {filtered.length === 0 ? (
